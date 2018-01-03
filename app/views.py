@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.serializers import UserSerializer, CoinSerializer
 
+from .grab import update_coin_list
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -16,6 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class CoinList(APIView):
     def get(self, request, format=None):
+        update_coin_list()  #temporary decision
         coins = Coin.objects.all()
         serializer = CoinSerializer(coins, many=True)
         return Response(serializer.data)
