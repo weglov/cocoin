@@ -10,13 +10,16 @@ def get_coins(url=URL, *params):
 
 def update_coin_list():
 	for coin in get_coins():
-		item = Coin.objects.update_or_create(
-			name=coin['name'],
-			defaults={
-				'code': coin['symbol'],
-				'price': coin['price_usd'],
-			},
-		)
+		try:
+			item = Coin.objects.update_or_create(
+				name=coin['name'],
+				defaults={
+					'code': coin['symbol'],
+					'price': round(float(coin['price_usd']), 3),
+				},
+			)
+		except:
+			print('Error save: {} ({})- {}'.format(coin['name'], coin['symbol'], coin['price_usd']))
 
 if __name__ == "__main__":
 	update_coin_list()
