@@ -10,9 +10,14 @@ class Coin(models.Model):
     update_date = models.DateTimeField('Update date', auto_now=True)
     published_date = models.DateTimeField('Create date', auto_now_add=True)
 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
-
     def __str__(self):
         return self.name
+
+
+class Asset(models.Model):
+    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    coin = models.ForeignKey('Coin', on_delete=models.CASCADE)
+    value = models.DecimalField('Value', decimal_places=8, max_digits=16)
+
+    def __str__(self):
+        return '{} - {} ({})'.format(self.owner, self.coin, self.value)

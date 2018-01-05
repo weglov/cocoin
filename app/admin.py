@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Coin
+from .models import Coin, Asset
 
 
 class CoinAdmin(admin.ModelAdmin):
@@ -7,3 +7,4 @@ class CoinAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 admin.site.register(Coin, CoinAdmin)
+admin.site.register(Asset)
