@@ -15,9 +15,23 @@ class Coin(models.Model):
 
 
 class Asset(models.Model):
-    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    wallet = models.ForeignKey('Wallet', on_delete=models.CASCADE)
     coin = models.ForeignKey('Coin', on_delete=models.CASCADE)
     value = models.DecimalField('Value', decimal_places=8, max_digits=16)
 
     def __str__(self):
         return '{} - {} ({})'.format(self.owner, self.coin, self.value)
+
+class Wallet(models.Model):
+    DEVICES = (
+        ('Mobile', 'Mobile'),
+        ('Web', 'Web'),
+        ('Desktop', 'Desktop'),
+    )
+
+    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE, default=1)
+    device = models.CharField('Device', max_length=16, choices=DEVICES, default='Desktop')
+    info = models.TextField('Info')
+
+    def __str__(self):
+        return self.info
