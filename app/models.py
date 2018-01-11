@@ -1,6 +1,15 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 class Coin(models.Model):
     name = models.CharField('Name', max_length=100, unique=True)
@@ -20,7 +29,7 @@ class Asset(models.Model):
     value = models.DecimalField('Value', decimal_places=8, max_digits=16)
 
     def __str__(self):
-        return '{} - {} ({})'.format(self.owner, self.coin, self.value)
+        return '{} - {} ({})'.format(self.wallet, self.coin, self.value)
 
 class Wallet(models.Model):
     DEVICES = (
@@ -31,7 +40,7 @@ class Wallet(models.Model):
 
     owner = models.ForeignKey('auth.User', on_delete=models.CASCADE, default=1)
     device = models.CharField('Device', max_length=16, choices=DEVICES, default='Desktop')
-    info = models.TextField('Info')
+    info = models.TextField('Info', null=True, blank=True)
 
     def __str__(self):
         return self.info
