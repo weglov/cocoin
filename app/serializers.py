@@ -1,7 +1,16 @@
 from django.contrib.auth.models import User
 from .models import Coin, Asset
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
+
+
+class AuthorizationSerializer(serializers.HyperlinkedModelSerializer):
+    token = serializers.SerializerMethodField()
+
+    def get_token(self, obj):
+        token = Token.objects.filter(user=obj.owner).first()
+        return token.key if token else None
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -9,12 +18,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'username', 'email', 'groups')
 
 
-class CoinSerializer(serializers.ModelSerializer):
+class CoinSerializer(AuthorizationSerializer):
     class Meta:
         model = Coin
         fields = ('id', 'name', 'code', 'price', 'logo', 'update_date', 'published_date')
 
-class AssetSerializer(serializers.ModelSerializer):
+class AssetSerializer(AuthorizationSerializer):
     class Meta:
         model = Asset
         fields = ('id', 'owner', 'coin', 'value')
