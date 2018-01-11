@@ -20,6 +20,3 @@ def update_coin_list():
 			)
 		except:
 			print('Error save: {} ({})- {}'.format(coin['name'], coin['symbol'], coin['price_usd']))
-
-if __name__ == "__main__":
-	update_coin_list()
