@@ -1,5 +1,5 @@
 import requests
-from app.models import Coin
+from app.models import Coin, CoinHistory
 
 
 URL = "https://api.coinmarketcap.com/v1/ticker/"
@@ -16,6 +16,9 @@ def update_coin_list():
 				defaults={
 					'code': coin['symbol'],
 					'price': round(float(coin['price_usd']), 3),
+					'supply': coin['total_supply'],
+					'volume_24h': coin['24h_volume_usd'],
+					'market_cap_usd': coin['market_cap_usd'],
 				},
 			)
 		except:

@@ -16,11 +16,22 @@ class Coin(models.Model):
     code = models.CharField('Code', max_length=10)
     price = models.DecimalField('Price', default=0, decimal_places=3, max_digits=16)
     logo = models.ImageField('Logo', upload_to='uploads/', null=True, blank=True)
+    market_cap_usd = models.DecimalField('Market cap', default=0, decimal_places=2, max_digits=16)
+    volume_24h = models.DecimalField('Volume 24', default=0, decimal_places=2, max_digits=16)
+    supply = models.DecimalField('Total Supply', default=0, decimal_places=2, max_digits=16)
     update_date = models.DateTimeField('Update date', auto_now=True)
     published_date = models.DateTimeField('Create date', auto_now_add=True)
 
     def __str__(self):
         return self.name
+
+class CoinHistory(models.Model):
+    coin = models.ForeignKey('Coin', on_delete=models.CASCADE)
+    price = models.DecimalField('Price', default=0, decimal_places=3, max_digits=16)
+    published_date = models.DateTimeField('Create date', auto_now_add=True)
+
+    def __str__(self):
+        return self.coin
 
 
 class Asset(models.Model):
