@@ -1,5 +1,5 @@
 import requests
-from app.models import Coin, CoinHistory
+from app.models import Coin, CoinShot
 
 
 URL = "https://api.coinmarketcap.com/v1/ticker/"
@@ -21,5 +21,7 @@ def update_coin_list():
 					'market_cap_usd': coin['market_cap_usd'],
 				},
 			)
+
+			shot = CoinShot.objects.create(coin=item[0], value=item[0].price)
 		except:
 			print('Error save: {} ({})- {}'.format(coin['name'], coin['symbol'], coin['price_usd']))

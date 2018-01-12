@@ -25,13 +25,13 @@ class Coin(models.Model):
     def __str__(self):
         return self.name
 
-class CoinHistory(models.Model):
+class CoinShot(models.Model):
     coin = models.ForeignKey('Coin', on_delete=models.CASCADE)
-    price = models.DecimalField('Price', default=0, decimal_places=3, max_digits=16)
+    value = models.DecimalField('Value', default=0, decimal_places=3, max_digits=16)
     published_date = models.DateTimeField('Create date', auto_now_add=True)
 
     def __str__(self):
-        return self.coin
+        return str(self.id)
 
 
 class Asset(models.Model):
