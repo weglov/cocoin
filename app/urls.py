@@ -10,9 +10,8 @@ router.register(r'coins', views.CoinList)
 app_name = 'app'
 
 urlpatterns = [
-    url(r'^login/$', views.UserViewSet, name='login'),
     url(r'^', include(router.urls)),
     url(r'^coins/(?P<pk>[0-9]+)/$', views.CoinDetail.as_view(), name='coins_details'),
     url(r'^assets/$', views.AssetsList.as_view(), name='assets_details'),
-     url(r'^api-token-auth/', obtain_jwt_token),
+     url(r'^login/', obtain_jwt_token),
 ]

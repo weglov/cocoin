@@ -12,12 +12,6 @@ class AuthorizationSerializer(serializers.HyperlinkedModelSerializer):
         token = Token.objects.filter(user=obj.owner).first()
         return token.key if token else None
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'groups')
-
-
 class CoinSerializer(AuthorizationSerializer):
     class Meta:
         model = Coin

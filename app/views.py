@@ -1,23 +1,15 @@
 from django.contrib.auth.models import User
 from .models import Coin, Asset
-from app.serializers import UserSerializer, CoinSerializer, AssetSerializer
+from app.serializers import CoinSerializer, AssetSerializer
 from rest_framework import mixins, generics
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authentication import TokenAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 
 from .grab import update_coin_list
-
-
-class UserViewSet(ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-
 
 class CoinList(ModelViewSet):
     authentication_classes = (TokenAuthentication, JSONWebTokenAuthentication)
