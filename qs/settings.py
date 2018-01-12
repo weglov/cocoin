@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from django.core.wsgi import get_wsgi_application
-from whitenoise.django import DjangoWhiteNoise
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +25,10 @@ SECRET_KEY = 's_3*d*xeq-**7*aut3rzr6#1_i!%gh0_a*)ule0l_25-*^c%($'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cocoin-server.herokuapp.com']
+ALLOWED_HOSTS = [
+    'cocoin-server.herokuapp.com',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -144,7 +145,3 @@ STATICFILES_DIRS = (
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
-
-
-application = get_wsgi_application()
-application = DjangoWhiteNoise(application)
