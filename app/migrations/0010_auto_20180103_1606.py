@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='coin',
             name='price',
-            field=models.DecimalField(decimal_places=3, default=0, max_digits='8', verbose_name='Price'),
+            field=models.DecimalField(decimal_places=3, default=0, max_digits=8, verbose_name='Price'),
         ),
     ]
