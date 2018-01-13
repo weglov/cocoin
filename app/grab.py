@@ -22,6 +22,9 @@ def update_coin_list():
 				},
 			)
 
-			shot = CoinShot.objects.create(coin=item[0], value=item[0].price)
+			shot = CoinShot.objects.filter(coin=item[0]).order_by('-published_date').first()
+
+			if shot and float(shot.value) != item[0].price:
+				CoinShot.objects.create(coin=item[0], value=item[0].price)
 		except:
 			print('Error save: {} ({})- {}'.format(coin['name'], coin['symbol'], coin['price_usd']))

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from .models import Coin, Asset
-from app.serializers import CoinSerializer, AssetSerializer
+from .models import Coin, Asset, CoinShot
+from app.serializers import CoinSerializer, AssetSerializer, CoinShotSerializer
 from rest_framework import mixins, generics
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authentication import TokenAuthentication
@@ -14,15 +14,17 @@ from .grab import update_coin_list
 class CoinList(ModelViewSet):
     authentication_classes = (TokenAuthentication, JSONWebTokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = Coin.objects.all()
+    queryset = Coin.objects.all().order_by('-price')[:50]
     serializer_class = CoinSerializer
 
     def list(self, request, *args, **kwargs):
         return ModelViewSet.list(self, request, *args, **kwargs)
+    
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        queryset = CoinShot.objects.filter(coin=pk).order_by('-published_date')
+        serializer = CoinShotSerializer(queryset, many=True)
 
-class CoinDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Coin.objects.all()
-    serializer_class = CoinSerializer
+        return Response(serializer.data)
 
 
 class AssetsList(generics.CreateAPIView):
