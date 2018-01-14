@@ -7,6 +7,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+import datetime
 
 
 from .grab import update_coin_list
@@ -21,7 +22,8 @@ class CoinList(ModelViewSet):
         return ModelViewSet.list(self, request, *args, **kwargs)
     
     def retrieve(self, request, pk=None, *args, **kwargs):
-        queryset = CoinShot.objects.filter(coin=pk).order_by('-published_date')
+        date_from = datetime.datetime.now() - datetime.timedelta(days=1)
+        queryset = CoinShot.objects.filter(coin=pk, published_date__gte=date_from).order_by('-published_date')
         serializer = CoinShotSerializer(queryset, many=True)
 
         return Response(serializer.data)
