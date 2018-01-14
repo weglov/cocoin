@@ -13,8 +13,8 @@ from .grab import update_coin_list
 
 
 class CoinList(ModelViewSet):
-    authentication_classes = (TokenAuthentication, JSONWebTokenAuthentication)
-    permission_classes = (IsAuthenticated,)
+    # authentication_classes = (TokenAuthentication, JSONWebTokenAuthentication)
+    # permission_classes = (IsAuthenticated,)
     queryset = Coin.objects.all().order_by('-price')[:50]
     serializer_class = CoinSerializer
 
