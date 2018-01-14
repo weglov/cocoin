@@ -9,8 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.utils import timezone
 
-
 from .grab import update_coin_list
+
 
 class CoinList(ModelViewSet):
     authentication_classes = (TokenAuthentication, JSONWebTokenAuthentication)
@@ -23,7 +23,7 @@ class CoinList(ModelViewSet):
     
     def retrieve(self, request, pk=None, *args, **kwargs):
         date_from = timezone.now() - timezone.timedelta(days=1)
-        queryset = CoinShot.objects.filter(coin=pk, published_date__gte=date_from).order_by('-published_date')
+        queryset = CoinShot.objects.filter(coin=pk, published_date__gte=date_from).order_by('published_date')
         serializer = CoinShotSerializer(queryset, many=True)
 
         return Response(serializer.data)
