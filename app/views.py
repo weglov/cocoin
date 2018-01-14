@@ -22,7 +22,7 @@ class CoinList(ModelViewSet):
         return ModelViewSet.list(self, request, *args, **kwargs)
     
     def retrieve(self, request, pk=None, *args, **kwargs):
-        date_from = timezone.now() - timezone.timedelta(days=3)
+        date_from = timezone.now() - timezone.timedelta(days=1)
         queryset = CoinShot.objects.filter(coin=pk, published_date__gte=date_from).order_by('-published_date')
         serializer = CoinShotSerializer(queryset, many=True)
 

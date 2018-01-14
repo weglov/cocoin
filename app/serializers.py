@@ -22,7 +22,7 @@ class CoinSerializer(AuthorizationSerializer):
     
     def get_change_24(self, instance):
         try:
-            date_from = timezone.now() - timezone.timedelta(days=3)
+            date_from = timezone.now() - timezone.timedelta(days=1)
             data = CoinShot.objects.order_by('-published_date').filter(coin=instance, published_date__gte=date_from)
             previous = data.last()
             current = data.first()
