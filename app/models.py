@@ -15,7 +15,7 @@ class Coin(models.Model):
     name = models.CharField('Name', max_length=100, unique=True)
     code = models.CharField('Code', max_length=10)
     price = models.DecimalField('Price', default=0, decimal_places=3, max_digits=16)
-    logo = models.ImageField('Logo', upload_to='uploads/', null=True, blank=True)
+    logo = models.ImageField('Logo', null=True, blank=True)
     market_cap_usd = models.DecimalField('Market cap', default=0, decimal_places=2, max_digits=16)
     volume_24h = models.DecimalField('Volume 24', default=0, decimal_places=2, max_digits=16)
     supply = models.DecimalField('Total Supply', default=0, decimal_places=2, max_digits=16)
