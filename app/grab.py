@@ -14,30 +14,26 @@ def get_coins(url=URL, *params):
 
 def update_coin_list(with_logo=False):
 	for coin in get_coins():
-		try:
-			item = Coin.objects.update_or_create(
-				name=coin['name'],
-				defaults={
-					'code': coin['symbol'],
-					'price': round(float(coin['price_usd']), 3),
-					'supply': coin['total_supply'],
-					'volume_24h': coin['24h_volume_usd'],
-					'market_cap_usd': coin['market_cap_usd'],
-					'logo': '/coins/{}.png'.format(coin['id'])
-				},
-			)
+		item = Coin.objects.update_or_create(
+			name=coin['name'],
+			defaults={
+				'code': coin['symbol'],
+				'price': round(float(coin['price_usd']), 3),
+				'supply': coin['total_supply'],
+				'volume_24h': coin['24h_volume_usd'],
+				'market_cap_usd': coin['market_cap_usd'],
+				'logo': '{}.png'.format(coin['id'])
+			},
+		)
 
-			if with_logo:
-				load_logo(coin['id'])
+		if with_logo:
+			load_logo(coin['id'])
 
-			CoinShot.objects.create(coin=item[0], value=item[0].price)
-		except:
-			print('Error save: {} ({})- {}'.format(coin['name'], coin['symbol'], coin['price_usd']))
-
+		CoinShot.objects.create(coin=item[0], value=item[0].price)
 
 def load_logo(id):
 	r = requests.get(IMAGE_URL + id + '.png', stream=True)
 	if r.status_code == 200:
-		with open('qs/uploads/coins/' + id + '.png', 'wb') as out_file:
+		with open('uploads/' + id + '.png', 'wb') as out_file:
 			shutil.copyfileobj(r.raw, out_file)
 	del r

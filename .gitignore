@@ -1,7 +1,8 @@
 .DS_Store
 *.sqlite3
-uploads/coins/*
-qs/uploads/coins/*
+uploads/coins/
+!app/uploads/coins/bitcoin.png
+app/uploads/coins/*.png
 
 
 # Created by https://www.gitignore.io/api/python
