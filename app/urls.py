@@ -6,11 +6,11 @@ from app import views
 
 router = DefaultRouter()
 router.register(r'coins', views.CoinList, base_name='coins')
+router.register(r'wallet', views.WalletViewSet, base_name='wallet')
 
 app_name = 'app'
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'^assets/$', views.AssetsList.as_view(), name='assets_details'),
-     url(r'^login/', obtain_jwt_token),
+    url(r'^login/', obtain_jwt_token),
 ]

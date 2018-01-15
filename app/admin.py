@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Coin, Asset, Wallet, CoinShot
+from .models import Coin, Asset, CoinShot
 
 
 class CoinAdmin(admin.ModelAdmin):
@@ -12,5 +12,4 @@ class CoinShotAdmin(admin.ModelAdmin):
 
 admin.site.register(Coin, CoinAdmin)
 admin.site.register(Asset)
-admin.site.register(Wallet)
 admin.site.register(CoinShot, CoinShotAdmin)

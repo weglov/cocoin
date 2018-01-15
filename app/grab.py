@@ -1,6 +1,4 @@
 import requests
-import shutil
-import random
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 

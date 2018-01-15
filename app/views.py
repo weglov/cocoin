@@ -15,8 +15,6 @@ from .grab import update_coin_list
 
 
 class CoinList(ModelViewSet):
-    # authentication_classes = (TokenAuthentication, JSONWebTokenAuthentication)
-    # permission_classes = (IsAuthenticated,)
     serializer_class = CoinSerializer
     filter_backends = (DjangoFilterBackend,)
 
@@ -38,7 +36,22 @@ class CoinList(ModelViewSet):
         return queryset[:50]
 
 
-class AssetsList(generics.CreateAPIView):
+class WalletViewSet(ModelViewSet):
+    authentication_classes = (TokenAuthentication, JSONWebTokenAuthentication)
+    permission_classes = (IsAuthenticated,)
     queryset = Asset.objects.all()
     serializer_class = AssetSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = Asset.objects.filter(owner=request.user)
+        serializer = AssetSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        coin_istance = Coin.objects.filter(id=request.data['coin'])[0]
+        coin = Asset.objects.create(owner=request.user, value=request.data['value'], coin=coin_istance)
+        serializer = AssetSerializer(coin)
+
+        return Response(serializer.data)
+
 

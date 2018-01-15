@@ -35,9 +35,13 @@ class CoinSerializer(AuthorizationSerializer):
 
 
 class AssetSerializer(AuthorizationSerializer):
+    coin = CoinSerializer()
+    value = serializers.FloatField()
+
     class Meta:
         model = Asset
-        fields = ('id', 'owner', 'coin', 'value')
+        fields = ('id', 'coin', 'value')
+
 
 class CoinShotSerializer(AuthorizationSerializer):
     value = serializers.FloatField()
