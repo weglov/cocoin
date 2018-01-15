@@ -1,6 +1,8 @@
 import requests
 import shutil
 import random
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 
 from app.models import Coin, CoinShot
 
@@ -18,6 +20,7 @@ def update_coin_list(with_logo=False):
 			name=coin['name'],
 			defaults={
 				'code': coin['symbol'],
+				'rank': coin['rank'],
 				'price': round(float(coin['price_usd']), 3),
 				'supply': coin['total_supply'],
 				'volume_24h': coin['24h_volume_usd'],
@@ -27,13 +30,18 @@ def update_coin_list(with_logo=False):
 		)
 
 		if with_logo:
-			load_logo(coin['id'])
+			save_image_from_url(item[0].logo, coin['id']);
 
 		CoinShot.objects.create(coin=item[0], value=item[0].price)
 
-def load_logo(id):
-	r = requests.get(IMAGE_URL + id + '.png', stream=True)
-	if r.status_code == 200:
-		with open('uploads/' + id + '.png', 'wb') as out_file:
-			shutil.copyfileobj(r.raw, out_file)
-	del r
+def save_image_from_url(field, id):
+    r = requests.get(IMAGE_URL + id + '.png', stream=True)
+    if r.status_code == requests.codes.ok:
+        img_temp = NamedTemporaryFile(delete = True)
+        img_temp.write(r.content)
+        img_temp.flush()
+        field.save(id + '.png', File(img_temp), save = True)
+
+        return True
+
+    return False
