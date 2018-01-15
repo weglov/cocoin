@@ -8,6 +8,8 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.utils import timezone
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 from .grab import update_coin_list
 
@@ -15,8 +17,8 @@ from .grab import update_coin_list
 class CoinList(ModelViewSet):
     # authentication_classes = (TokenAuthentication, JSONWebTokenAuthentication)
     # permission_classes = (IsAuthenticated,)
-    queryset = Coin.objects.all().order_by('-price')[:50]
     serializer_class = CoinSerializer
+    filter_backends = (DjangoFilterBackend,)
 
     def list(self, request, *args, **kwargs):
         return ModelViewSet.list(self, request, *args, **kwargs)
@@ -27,6 +29,13 @@ class CoinList(ModelViewSet):
         serializer = CoinShotSerializer(queryset, many=True)
 
         return Response(serializer.data)
+
+    def get_queryset(self):
+        queryset = Coin.objects.all().order_by('-price')
+        name = self.request.query_params.get('name', None)
+        if name is not None:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset[:50]
 
 
 class AssetsList(generics.CreateAPIView):

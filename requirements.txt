@@ -3,6 +3,7 @@ dj-database-url==0.4.2
 djangorestframework==3.7.7
 djangorestframework-jwt==1.8.0
 django-cors-headers==2.1.0
+django-filter==1.1.0
 Pillow==5.0.0
 requests==2.18.4
 psycopg2==2.7.1
