@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from .models import Coin, Asset, CoinShot
-from app.serializers import CoinSerializer, AssetSerializer, CoinShotSerializer
+from app.serializers import CoinSerializer, AssetSerializer, CoinShotSerializer, UserSerializer
 from rest_framework import mixins, generics
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authentication import TokenAuthentication
@@ -53,5 +53,12 @@ class WalletViewSet(ModelViewSet):
         serializer = AssetSerializer(coin)
 
         return Response(serializer.data)
+
+
+class SignUpViewSet(ModelViewSet):
+    serializer_class = UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        return ModelViewSet.create(self, request, *args, **kwargs)
 
 
